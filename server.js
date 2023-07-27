@@ -8,9 +8,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 var items = [
-  { text: "COS20007 Hurdle Test Resit" },
-  { text: "COS10025 DFD Diagram Presentation" },
-  { text: "COS10009 Introduction To Programming" },
+  { unitCode: "COS20007", details: "Hurdle Test Resit" },
+  { unitCode: "COS10025", details: "DFD Diagram Presentation" },
+  { unitCode: "COS10009", details: "Introduction To Programming" },
 ];
 
 app.get("/items", (req, res) => {
