@@ -7,14 +7,13 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-var items = [
-  { unitCode: "COS20007", details: "Hurdle Test Resit" },
-  { unitCode: "COS10025", details: "DFD Diagram Presentation" },
-  { unitCode: "COS10009", details: "Introduction To Programming" },
-];
+var items = [];
 
 app.get("/items", (req, res) => {
   res.send(items);
+});
+app.get("/items/:id", (req, res) => {
+  res.send(items[req.params.id]);
 });
 
 app.post("/items", (req, res) => {
