@@ -28,7 +28,8 @@ app.get("/items/:id", (req, res) => {
 });
 
 app.post("/items", (req, res) => {
-  const userID = req.header("Authorization");
+  const tokenID = req.header("Authorization");
+  const userID = jsonWebToken.decode(tokenID, "vockey");
   let temp = req.body;
   temp.user = users[userID].username;
   items.push(temp);
