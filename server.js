@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const jsonWebToken = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const app = express();
 const port = 3000;
 
@@ -36,7 +37,8 @@ app.post("/items", (req, res) => {
   res.json(temp);
 });
 
-app.post("/registers", (req, res) => {
+app.post("/registers", async (req, res) => {
+  // Make the function asynchronous
   let regData = req.body;
   const existingUser = users.find((user) => user.username === regData.username);
   if (existingUser) {
@@ -45,26 +47,47 @@ app.post("/registers", (req, res) => {
       .json({ error: "Username already exists. Registration failed." });
   }
 
-  let newIndex = users.push(regData);
-  let regID = newIndex - 1;
-  let token = jsonWebToken.sign(regID, "vockey");
+  try {
+    // Hash the password before storing it
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(regData.password, saltRounds);
 
-  res.json(token);
+    // Store the hashed password in the database
+    regData.password = hashedPassword;
+    let newIndex = users.push(regData);
+    let regID = newIndex - 1;
+    let token = jsonWebToken.sign(regID, "vockey");
+
+    res.json(token);
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred during registration." });
+  }
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
+  // Make the function asynchronous
   let loginData = req.body;
   const existingUserIndex = users.findIndex(
     (user) => user.username === loginData.username
   );
   if (existingUserIndex >= 0) {
-    if (users[existingUserIndex].password === loginData.password) {
-      let token = jsonWebToken.sign(existingUserIndex, "vockey");
-      res.json(token);
-    } else {
-      return res
-        .status(401)
-        .json({ error: "Password Error, please try again" });
+    try {
+      // Compare the provided password with the hashed password in the database
+      const passwordMatch = await bcrypt.compare(
+        loginData.password,
+        users[existingUserIndex].password
+      );
+      if (passwordMatch) {
+        let token = jsonWebToken.sign(existingUserIndex, "vockey");
+        res.json(token);
+        console.log(users);
+      } else {
+        return res
+          .status(401)
+          .json({ error: "Password Error, please try again" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "An error occurred during login." });
     }
   } else {
     return res.status(401).json({
