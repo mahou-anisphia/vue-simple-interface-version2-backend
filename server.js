@@ -52,4 +52,25 @@ app.post("/registers", (req, res) => {
   res.json(token);
 });
 
+app.post("/login", (req, res) => {
+  let loginData = req.body;
+  const existingUserIndex = users.findIndex(
+    (user) => user.username === loginData.username
+  );
+  if (existingUserIndex >= 0) {
+    if (users[existingUserIndex].password === loginData.password) {
+      let token = jsonWebToken.sign(existingUserIndex, "vockey");
+      res.json(token);
+    } else {
+      return res
+        .status(401)
+        .json({ error: "Password Error, please try again" });
+    }
+  } else {
+    return res.status(401).json({
+      error: `The account with username ${loginData.username} does not exist`,
+    });
+  }
+});
+
 app.listen(port, () => console.log("app running"));
