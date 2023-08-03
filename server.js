@@ -18,6 +18,69 @@ var items = [
     details: "Anisphia's magocology",
     user: "admin",
   },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
+  {
+    unitCode: "MAH10009",
+    completionMethod: "Intro to Mahou",
+    email: "coding.students@example.com",
+    details: "Anisphia's magocology",
+    user: "admin",
+  },
 ];
 var users = [{ username: "admin", password: "root" }];
 
@@ -80,7 +143,6 @@ app.post("/login", async (req, res) => {
       if (passwordMatch) {
         let token = jsonWebToken.sign(existingUserIndex, "vockey");
         res.json(token);
-        console.log(users);
       } else {
         return res
           .status(401)
